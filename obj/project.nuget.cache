@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Vkf+Pg/twGIMMEYNOX6R8TbOzw1na5bpzagBErR/8MgYitWYJ9+p6t9u6fflPpWhbLcTJSUoDT98NcztYJjClQ==",
+  "dgSpecHash": "/HuTFw08NCeqS90yBi9syzrF2qsguDOGNXVM5Zwn3JjLENv/4PA4J8b1ggnMP+1sH8QFVrYhqXuPj0b2ZY+gVA==",
   "success": true,
   "projectFilePath": "C:\\Users\\carloserochav\\source\\repos\\atrox39\\notes.Tests\\notes.Tests.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\carloserochav\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512",
     "C:\\Users\\carloserochav\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "C:\\Users\\carloserochav\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
-    "C:\\Users\\carloserochav\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.1\\microsoft.aspnetcore.authentication.jwtbearer.8.0.1.nupkg.sha512",
+    "C:\\Users\\carloserochav\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.2\\microsoft.aspnetcore.authentication.jwtbearer.8.0.2.nupkg.sha512",
     "C:\\Users\\carloserochav\\.nuget\\packages\\microsoft.aspnetcore.websockets.protocol\\0.1.0\\microsoft.aspnetcore.websockets.protocol.0.1.0.nupkg.sha512",
     "C:\\Users\\carloserochav\\.nuget\\packages\\microsoft.codecoverage\\17.6.0\\microsoft.codecoverage.17.6.0.nupkg.sha512",
     "C:\\Users\\carloserochav\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

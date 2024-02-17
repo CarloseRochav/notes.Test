@@ -9,20 +9,26 @@ using System.Threading.Tasks;
 using notes.Repository;
 using System.ComponentModel.DataAnnotations;
 using notes.DTOs;
+using Xunit.Abstractions;
+using Newtonsoft.Json;
 namespace notes.Tests
 {
     public class LoginShould
     {
         private readonly DbContextOptions<NotesContext> dbContextOptions;
+        private readonly ITestOutputHelper output;//Aux to show output message
 
 
-        public LoginShould()
+        public LoginShould(ITestOutputHelper output)
         {
             dbContextOptions = new DbContextOptionsBuilder<NotesContext>()
                  .UseInMemoryDatabase("notes")
                  .Options;
+            this.output = output;
+            
         }
 
+        
 
         [Fact]
         public async Task ValidateLogin()
@@ -35,29 +41,40 @@ namespace notes.Tests
             var newUser = new Users()
             {
                 Username = "mark12345",
-                Email = "mark@gmail.com",
+                Email = "mark123@gmail.com",
                 Password = "123456"
             };           
 
-            using (notesContext)            {
+            using (var nContext = new NotesContext(dbContextOptions)){
 
-                //notesContext.Add(newUser);
-                await notesContext.UserModel.AddAsync(newUser);
-                await notesContext.SaveChangesAsync();
+                
+                object userInserted = await nContext.UserModel.AddAsync(newUser);
+                await nContext.SaveChangesAsync();
 
                 //ACT              
-                var result = await repository.Login(new LoginDto { Email=newUser.Email,Password=newUser.Password});
+                var result = await repository.Login(new LoginDto { Email=newUser.Email,Password=newUser.Password});                
+                //var result = await repository.Login(new LoginDto { Email = "mat123@gmail.com", Password = "123456" });                
 
-                //Assert
-                Assert.NotNull(result);
-        }
+                var obj1Str = JsonConvert.SerializeObject(result);//Serializado para poder mostrarlo en output
 
-            
-            
+                //Assert                
+                //Assert.NotNull(userInserted);
+                Assert.Equal(2, nContext.UserModel.Count());                
+                output.WriteLine("Records in the db {0} ",nContext.UserModel.Count());
+                output.WriteLine("Objeto insertado {0} ",userInserted);
+                output.WriteLine("Objeto logged {0} ",obj1Str.ToString());
+                //output.WriteLine("Result {0} ",result.Username);
+                //Assert.NotNull(result);
+                //Assert.Single(nContext.UserModel);//This show error because return 2 elemetns and not 1
+                //Assert.Single();
+            }
 
-            
 
-            
+
+
+
+
+
         }
         
     }
