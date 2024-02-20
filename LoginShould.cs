@@ -11,85 +11,77 @@ using System.ComponentModel.DataAnnotations;
 using notes.DTOs;
 using Xunit.Abstractions;
 using Newtonsoft.Json;
+using Moq;
+using Microsoft.Extensions.Options;
 namespace notes.Tests
 {
     public class LoginShould
     {
-        //private readonly DbContextOptions<NotesContext> dbContextOptions;        
-        private readonly DbContextOptions<NotesContext> dbContextOptions;        
-        private readonly ITestOutputHelper output;//Aux to show output message
+
+        //Contexto
+        //private readonly DbContextOptions<NotesContext> dbContextOptions;              
+        //Aux to show output message
+        ITestOutputHelper output;
 
 
+
+        //Contexto in-memory-database
         //public LoginShould(ITestOutputHelper output)
         //{
         //    dbContextOptions = new DbContextOptionsBuilder<NotesContext>()
         //         .UseInMemoryDatabase("notes")
         //         .Options;
         //    this.output = output;
-
         //}
 
-        public LoginShould(ITestOutputHelper output)
-        {
-            dbContextOptions = new DbContextOptionsBuilder<NotesContext>().UseNpgsql("Host=127.0.0.1;Database=notes;Username=postgres;Password=lost1989").Options;            
-            this.output = output;
 
-        }
+        //USANDO EL CONTEXTO REAL DE LA BASE DE DATOS
+        //public LoginShould(ITestOutputHelper output)
+        //{
+        //    dbContextOptions = new DbContextOptionsBuilder<NotesContext>().UseNpgsql("Host=127.0.0.1;Database=notes;Username=postgres;Password=lost1989").Options;
+        //    this.output = output;
 
+        //}
 
         [Fact]
         public async Task ValidateLogin()
         {
-            //ARRANGE
-            //var notesContext = new NotesContext(dbContextOptions);            
-
-            //ACT            
-            //var newUser = new Users()
-            //{
-            //    Username = "mark12345",
-            //    Email = "mark123@gmail.com",
-            //    Password = "123456"
-            //};           
-
-            //using (var nContext = new NotesContext(dbContextOptions)){//crear un diferente scope
+            //Mantener dentro de la misma funcion FACT
+            var dbContextOptions = new DbContextOptionsBuilder<NotesContext>()
+                 .UseInMemoryDatabase("notes")
+                 .Options;
 
 
-            //    object userInserted = await nContext.UserModel.AddAsync(newUser);
-            //    await nContext.SaveChangesAsync();                
 
-            //}
-
-            //AuthRepository _authRepository = new AuthRepository(NotesContext):
-            
-
-            using (var nContext = new NotesContext(dbContextOptions))
-            {//crear un diferente scope
-
-                //LoginDto loginUser = new LoginDto { Email = newUser.Email, Password = newUser.Password };
-                LoginDto loginUser = new LoginDto { Email = "mat123@gmail.com", Password = "123456" };
-
-                //ACT              
-                AuthRepository repository = new AuthRepository(nContext);
-                var result = await repository.Login(loginUser);
-                //var result = await repository.Login(new LoginDto { Email = "mat123@gmail.com", Password = "123456" });                
-
-                var obj1Str = JsonConvert.SerializeObject(result);//Serializado para poder mostrarlo en output
-
-                //Assert                
-                //Assert.NotNull(userInserted);
-                Assert.Equal(2, nContext.UserModel.Count());
-                output.WriteLine("Records in the db {0} ", nContext.UserModel.Count());
-                //output.WriteLine("Objeto logged {0} ", obj1Str.ToString());
-                output.WriteLine("Objeto logged  : {0} ", result.Email);
-                //output.WriteLine("Comparacion {0} ", string.Equals(newUser.Email, loginUser.Email, StringComparison.OrdinalIgnoreCase));
-                //output.WriteLine("Usuario nuevo , Email {0} & password {1}", newUser.Email, newUser.Password);
-                output.WriteLine("Usuario signin , Email {0} & password {1}", loginUser.Email, loginUser.Password);                
-
+            // Insert seed data into the database using one instance of the context
+            await using (var context = new NotesContext(dbContextOptions))
+            {
+                context.UserModel.Add(new Users { Username = "mat123", Email = "mat123@gmail.com", Password = "123456" });
+                context.UserModel.Add(new Users { Username = "mark123", Email = "mark123@gmail.com", Password = "123456" });
+                context.UserModel.Add(new Users { Username = "maxt123", Email = "maxt123@gmail.com", Password = "123456" });
+                context.SaveChanges();
             }
 
 
+            // Use a clean instance of the context to run the test
+            await using (var context = new NotesContext(dbContextOptions))
+            {
+                AuthRepository _repository = new AuthRepository(context);                
+                List<Users> users = await _repository.GetAllUsers();
+                var result = _repository.Login(new() { Email = "max123@gmail.com", Password = "1234567" });
 
+                Assert.NotNull(result);
+                //output.WriteLine("Resultado {0} ");
+                //Assert.Equal(3, users.Count);
+            }            
+            
+            //Assert.Equal(2, nContext.UserModel.Count());         
+            //output.WriteLine("Comparacion {0} ", string.Equals(newUser.Email, loginUser.Email, StringComparison.OrdinalIgnoreCase));            
+            //output.WriteLine("Usuario signin , Email {0} & password {1}", result.Email, result.Password);
         }
-        
+
     }
+
+
+
 }

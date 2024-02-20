@@ -130,3 +130,5 @@ C:\Users\carloserochav\source\repos\atrox39\notes.Tests\bin\Debug\net8.0\Npgsql.
 C:\Users\carloserochav\source\repos\atrox39\notes.Tests\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\carloserochav\source\repos\atrox39\notes.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.WebSockets.Protocol.dll
 C:\Users\carloserochav\source\repos\atrox39\notes.Tests\obj\Debug\net8.0\notes.Tests.sourcelink.json
+C:\Users\carloserochav\source\repos\atrox39\notes.Tests\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\carloserochav\source\repos\atrox39\notes.Tests\bin\Debug\net8.0\Moq.dll
