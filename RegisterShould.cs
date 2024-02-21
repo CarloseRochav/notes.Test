@@ -34,8 +34,8 @@ namespace notes.Tests
             AuthRepository repository = new AuthRepository(notesContext);
             var newUser = new Users()
             {
-                Username = "mat12345",
-                Email = "mat123@gmail.com",
+                Username = "mont12345",
+                Email = "mont123@gmail.com",
                 Password = "123456"
             };
 
